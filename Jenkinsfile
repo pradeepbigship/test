@@ -33,16 +33,18 @@ pipeline {
             }
         }
 
-        stage('Deploy to IIS') {
-            steps {
-                // Stop IIS before deployment
-                bat 'net stop w3svc'
+       stage('Deploy to IIS') {
+    steps {
+        // Restart a specific application pool (e.g., "MyAppPool")
+        bat '''
+        powershell -Command "Stop-WebAppPool -Name 'uploadimageurl'; Start-WebAppPool -Name 'uploadimageurl"
+        '''
+        
+        // Copy files to IIS folder
+        bat 'xcopy publish_output "%WEBAPP_PATH%" /E /H /C /Y'
 
-                // Copy files to IIS folder
-                bat 'xcopy publish_output "%WEBAPP_PATH%" /E /H /C /Y'
-
-                // Start IIS again
-                bat 'net start w3svc'
+        // Optionally restart IIS if necessary
+        // bat 'iisreset'
             }
         }
     }
