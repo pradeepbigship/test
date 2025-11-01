@@ -37,7 +37,8 @@ pipeline {
     steps {
         // Restart a specific application pool (e.g., "MyAppPool")
         bat '''
-        powershell -Command "Stop-WebAppPool -Name 'uploadimageurl'; Start-WebAppPool -Name 'uploadimageurl"
+        powershell -Command "Stop-WebAppPool -Name 'uploadimageurl'; Start-WebAppPool -Name 'uploadimageurl'"
+
         '''
         
         // Copy files to IIS folder
